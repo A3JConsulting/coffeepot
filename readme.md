@@ -1,9 +1,9 @@
 ##### CoffeePot
-  Installation instructions for application:
+Installation instructions for application:
   * `npm install` @ root
   * `npm start` @ root
 
-  Installation instructions for server:
+Installation instructions for server:
   * `npm install` @ src/srv
   * `npm start` @ src/srv
 
