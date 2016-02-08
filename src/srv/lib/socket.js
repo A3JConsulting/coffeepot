@@ -3,17 +3,17 @@ module.exports = (function(object){
 
   object.init = function(){
     ws.on("connection", function(pipe){
-      var icon = "foo1.png";
+      var icon = 0;
 
       var tester = setInterval(function(){
         console.log("Sending data.");
 
-        pipe.send(JSON.stringify({"method":"status_change", "payload": icon}));
+        pipe.send(JSON.stringify({"method":"status_change", "payload": "state_0"+icon+".png"}));
 
-        if(icon === "foo1.png"){
-          icon = "foo2.png";
+        if(icon>=7){
+          icon = 0;
         }else{
-          icon = "foo1.png";
+          icon++;
         }
       }, 6000);
 

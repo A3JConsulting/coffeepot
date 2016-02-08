@@ -9,9 +9,9 @@ module.exports = (function(object){
     _parse(websocket);
   };
   object.status_change = function(arg){
-    new Notification("Status Update", {
+    new Notification("Coffee consumed!", {
       title: "WebSocket",
-      body: "And no coffee.."
+      body: "Please observe status."
     });
 
     ipc.send("change-tray-icon", arg);

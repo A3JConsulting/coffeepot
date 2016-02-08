@@ -7,7 +7,7 @@ app.on("ready", function(){
       main.loadURL("file://" + __dirname + "/index.html");
       //main.webContents.openDevTools({ detach: true });
 
-  var tray = new (require("tray"))(path.join(__dirname, "/lib/assets/foo1.png"));
+  var tray = new (require("tray"))(path.join(__dirname, "/lib/assets/state_00.png"));
 
   ipc.on("change-tray-icon", function(event, arg){
     tray.setImage(path.join(__dirname, "/lib/assets/"+arg));
