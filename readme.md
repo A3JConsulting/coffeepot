@@ -1,6 +1,12 @@
-####CoffeePot project
+##### CoffeePot
+  Installation instructions for application:
+  * `npm install` @ root
+  * `npm start` @ root
 
-  npm install ; npm start
+  Installation instructions for server:
+  * `npm install` @ src/srv
+  * `npm start` @ src/srv
+
 
 ##### JSHint
   Installation instructions for [Atom](www.atom.io).
