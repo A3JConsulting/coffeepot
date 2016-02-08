@@ -1,0 +1,19 @@
+# OSX
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+._*
+
+# NPM / Node
+node_modules/
+npm-debug.log
+
+# Electron
+Electron.app
+
+# Photoshop
+*.raw
+*.psd
+/bin/

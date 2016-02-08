@@ -1,0 +1,15 @@
+{
+  "name": "coffeepot_srv",
+  "version": "1.0.0",
+  "description": "command and control for coffeepot.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js"
+  },
+  "author": "Linus Berggren",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^1.0.1"
+  }
+}
