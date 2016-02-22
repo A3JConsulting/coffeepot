@@ -9,10 +9,10 @@ module.exports = (function(object){
     _parse(websocket);
   };
   object.status_change = function(arg){
-    new Notification("Coffee consumed!", {
+    /*new Notification("Coffee consumed!", {
       title: "WebSocket",
       body: "Please observe status."
-    });
+    });*/
 
     ipc.send("change-tray-icon", arg);
   };

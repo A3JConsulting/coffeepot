@@ -2,20 +2,22 @@ module.exports = (function(object){
   var ws = (require("ws").Server)({ port: 8080 });
 
   object.init = function(){
-    ws.on("connection", function(pipe){
-      var icon = 0;
+    var tester;
 
-      var tester = setInterval(function(){
+    ws.on("connection", function(pipe){
+      var icon = 10;
+
+      tester = setInterval(function(){
         console.log("Sending data.");
 
-        pipe.send(JSON.stringify({"method":"status_change", "payload": "state_0"+icon+".png"}));
+        pipe.send(JSON.stringify({"method":"status_change", "payload": "state_"+icon+".png"}));
 
-        if(icon>=7){
-          icon = 0;
+        if(icon === 0){
+          icon = 10;
         }else{
-          icon++;
+          icon--;
         }
-      }, 6000);
+      }, 1000);
 
       pipe.on("message", function(data){
         data = JSON.parse(data);
@@ -26,7 +28,12 @@ module.exports = (function(object){
           throw e;
         }
       });
+
+      pipe.on("close", function(){
+        clearInterval(tester);
+      });
     });
+
   };
   return object;
 }({}));
