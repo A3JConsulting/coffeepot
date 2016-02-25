@@ -1,17 +1,11 @@
 'use strict'
-
-function capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1)
-}
-
 module.exports = function guessNextState(buffer, current, brewer) {
 
   const possibleTransitions = (brewer.transitions()) ? brewer.transitions() : []
 
   possibleTransitions.forEach(transition => {
-    const assertion = `assert${capitalize(transition)}`
+    const assertion = `assert${transition}`
     console.log(assertion,'-', brewer[assertion](buffer, current.left, current.right));
-
     if (brewer[assertion](buffer, current.left, current.right)) {
       brewer[transition]() // call transition method on the brewer
       return {
@@ -22,6 +16,7 @@ module.exports = function guessNextState(buffer, current, brewer) {
     }
   })
 
+  brewer.sendState(null, true)
   return {
     state: brewer.current,
     left: current.left,

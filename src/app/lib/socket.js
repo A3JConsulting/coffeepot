@@ -8,13 +8,14 @@ module.exports = (function(object){
 
     _parse(websocket);
   };
-  object.status_change = function(arg){
-    /*new Notification("Coffee consumed!", {
-      title: "WebSocket",
-      body: "Please observe status."
-    });*/
+  object.status_change = function(payload){
+    new Notification("Coffee consumed!", {
+      title: payload.message.title,
+      body: payload.message.body,
+      icon: ""
+    });
 
-    ipc.send("change-tray-icon", arg);
+    ipc.send("change-tray-icon", payload.icon);
   };
   function _parse(ws){
     ws.onmessage = function(blob){

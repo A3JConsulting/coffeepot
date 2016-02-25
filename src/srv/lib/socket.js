@@ -1,25 +1,23 @@
 module.exports = (function(object){
-  var ws = (require("ws").Server)({ port: 8080 });
+  var wss = (require("ws").Server)({ port: 8080 });
 
   object.init = function(){
-    var tester;
 
-    ws.on("connection", function(pipe){
-      var icon = 10;
+    wss.on("connection", function(socket){
+      // var icon = 10
+      // socket.send(JSON.stringify({
+      //   method: "status_change",
+      //   payload: {
+      //     icon: "state_"+icon+".png",
+      //     message: {
+      //       title: 'Min titel',
+      //       body: 'Lorem Ipsum'
+      //     }
+      //   }
+      // }));
 
-      tester = setInterval(function(){
-        console.log("Sending data.");
 
-        pipe.send(JSON.stringify({"method":"status_change", "payload": "state_"+icon+".png"}));
-
-        if(icon === 0){
-          icon = 10;
-        }else{
-          icon--;
-        }
-      }, 1000);
-
-      pipe.on("message", function(data){
+      socket.on("message", function(data){
         data = JSON.parse(data);
 
         try{
@@ -29,11 +27,15 @@ module.exports = (function(object){
         }
       });
 
-      pipe.on("close", function(){
-        clearInterval(tester);
-      });
     });
 
   };
+
+  object.broadcast = function(msg){
+    wss.clients.forEach(function each(client) {
+        client.send(msg);
+    });
+  }
+
   return object;
 }({}));

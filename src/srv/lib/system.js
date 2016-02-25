@@ -1,8 +1,10 @@
 module.exports = (function(object){
-  var socket = require("./socket");
-
+  var poll = require('./poll');
+  
   object.init = function(){
-    
+    poll();
+
   };
+
   return object;
 }({}));
