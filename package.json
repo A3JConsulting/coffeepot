@@ -14,8 +14,5 @@
     "electron-packager": "^5.2.1",
     "electron-prebuilt": "^0.36.5",
     "gulp": "^3.9.0"
-  },
-  "dependencies": {
-    "rx": "^4.0.8"
   }
 }
