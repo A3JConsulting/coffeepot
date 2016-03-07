@@ -4,7 +4,7 @@ module.exports = (function(object){
   var ipc = require("ipc");
 
   object.connect = function(){
-    var websocket = new WebSocket("ws://localhost:8080");
+    var websocket = new WebSocket("ws://172.30.33.156:8080");
 
     _parse(websocket);
   };
@@ -20,9 +20,14 @@ module.exports = (function(object){
   function _parse(ws){
     ws.onmessage = function(blob){
       var data = JSON.parse(blob.data);
-
+      console.log(data);
       try{
-        object[data.method](data.payload);
+        if(data.state === "filter_or_pot_removed"){
+          ipc.send("change-tray-icon", "state_0.png");
+        } else {
+          ipc.send("change-tray-icon", "state_"+data.cups+".png");
+        }
+        //object[data.method](data.payload);
       }catch(e){
         throw e;
       }

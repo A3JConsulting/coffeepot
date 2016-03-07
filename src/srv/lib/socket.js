@@ -16,7 +16,6 @@ module.exports = (function(object){
       //   }
       // }));
 
-
       socket.on("message", function(data){
         data = JSON.parse(data);
 
@@ -35,7 +34,7 @@ module.exports = (function(object){
     wss.clients.forEach(function each(client) {
         client.send(msg);
     });
-  }
+  };
 
   return object;
 }({}));

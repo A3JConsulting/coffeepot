@@ -1,4 +1,7 @@
 'use strict'
+
+//REFACTOR ALL MOVES TO GLOBAL BIG NONO.
+
 const EventEmitter = require('events').EventEmitter
 const Rx = require('rx')
 const guessNextState = require('./guess')
@@ -92,6 +95,9 @@ function logLastFrame(buffer, prop) {
 module.exports = function poll() {
   var tick = 0
   setInterval(function() {
+    if(!stream[tick]){
+      tick = 0;
+    };
     weightsEmitter.emit('weights', stream[tick].left, stream[tick].right)
     tick++
   }, INPUT_TICK_INTERVAL)

@@ -1,6 +1,5 @@
 'use strict'
 module.exports = function guessNextState(buffer, current, brewer) {
-
   const possibleTransitions = (brewer.transitions()) ? brewer.transitions() : []
 
   possibleTransitions.forEach(transition => {

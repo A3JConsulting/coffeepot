@@ -1,4 +1,7 @@
+//REFACTOR ALL MOVES TO GLOBAL BIG NONO.
+
 'use strict'
+
 let StateMachine = require('./fsm/state-machine.min.js')
 let socket = require('../socket.js')
 
