@@ -13,6 +13,9 @@ npm-debug.log
 # Electron
 Electron.app
 
+# Built
+Coffeepot-darwin-x64/
+
 # Photoshop
 *.raw
 *.psd

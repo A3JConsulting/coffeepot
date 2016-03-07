@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron ./src/app/index.js",
-    "pack": "electron-packager ./src/app Coffeepot --platform=darwin --arch=x64 --version=0.35.6 --icon=./src/app/lib/assets/coffee_icon.icns"
+    "pack": "electron-packager ./src/app/ Coffeepot --platform=darwin --arch=x64 --version=0.35.6 --icon=./src/app/lib/assets/coffee_icon.icns"
   },
   "author": "",
   "license": "ISC",
