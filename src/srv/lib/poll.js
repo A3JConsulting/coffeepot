@@ -65,7 +65,6 @@ var stream = [
   { left: 1500, right: 1100 },
   { left: 1500, right: 1100 },
   { left: 1500, right: 1100 },
-
 ]
 
 function appendToBuffer(buffer, newState) {
