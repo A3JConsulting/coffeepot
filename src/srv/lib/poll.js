@@ -1,7 +1,5 @@
 'use strict'
 
-//REFACTOR ALL MOVES TO GLOBAL BIG NONO.
-
 const EventEmitter = require('events').EventEmitter
 const Rx = require('rx')
 const guessNextState = require('./guess')
@@ -11,7 +9,7 @@ const INPUT_TICK_INTERVAL = 500 // milliseconds
 const BUFFER_TIME = 10 // seconds
 const STREAM_BUFFER_LENGTH = (BUFFER_TIME * 1000) / INPUT_TICK_INTERVAL // ticks
 
-let brewer = new (require('./machine/brewer'))
+let brewer = new (require('./machine/brewer'));
 
 const initialState = {
   state: 'idle',
@@ -31,7 +29,7 @@ let weightStream$ = Rx.Observable
     const nextState = guessNextState(buffer, current, brewer)
     return appendToBuffer(buffer, nextState)
   }, [initialState])
-  .subscribe(x => console.log('Done.'))
+  .subscribe(x => console.log('Done.'));
 
 var stream = [
   { left: 2200, right: 600 }, // Bryggning pågår

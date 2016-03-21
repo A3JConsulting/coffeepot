@@ -1,5 +1,3 @@
-//REFACTOR ALL MOVES TO GLOBAL BIG NONO.
-
 "use strict";
 
 let StateMachine = require('javascript-state-machine');
@@ -49,7 +47,7 @@ StateMachine.create({
     },
 
   }
-})
+});
 
 /**
  * On each state transition, send new state and the event that

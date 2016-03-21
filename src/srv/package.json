@@ -10,6 +10,7 @@
   "author": "Linus Berggren",
   "license": "ISC",
   "dependencies": {
+    "csv-parse": "^1.0.2",
     "javascript-state-machine": "^2.3.5",
     "rx": "^4.0.8",
     "ws": "^1.0.1"
