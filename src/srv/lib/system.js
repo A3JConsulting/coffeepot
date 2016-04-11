@@ -3,15 +3,17 @@ module.exports = (function(object){
   const hx711 = require("hx711");
 
   object.init = function(){
-    buffer = "";
+    //buffer = "";
+
     timer = setInterval(function(){
-    	buffer += hx711.getValues() + "\n";
+    	console.log(hx711.getValues() + "\n");
     }, 200);
 
+    /*
     setTimeout(function(){
     	clearInterval(timer);
     	console.log(buffer);
-    }, 10000);
+    }, 10000);*/
 
     //poll();
     //state.init();
