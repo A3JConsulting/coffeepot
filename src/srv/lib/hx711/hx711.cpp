@@ -37,9 +37,9 @@ HX711::HX711() {
     SCK_LOW_TIME = 1;       // microseconds
     DATA_DELAY_TIME = 1;    // microseconds
 
-    printf("before init\n");
+    //printf("before init\n");
     uint8_t success = bcm2835_init();
-    printf("init success: %d\n", success);
+    //printf("init success: %d\n", success);
 
     // Set DATA pins to input
     bcm2835_gpio_fsel(DATA_L, BCM2835_GPIO_FSEL_INPT);
@@ -134,9 +134,9 @@ uint32_t HX711::getRawBits(RPiGPIOPin SCK, RPiGPIOPin DATA, uint8_t GAIN)
     uint32_t data = 0;
     uint8_t bit = 0;
 
-    printf("Waiting for data to be ready...\n");
+    //printf("Waiting for data to be ready...\n");
     while(bcm2835_gpio_lev(DATA)); // wait until data is ready
-    printf("reading!\n");
+    //printf("reading!\n");
 
     int b;
     for (b=0; b<24; b++){
