@@ -18,7 +18,7 @@ class HX711 : public node::ObjectWrap {
 
         // node.js wrapper methods
         static void New(const v8::FunctionCallbackInfo<v8::Value>& args);
-        static void GetValue(const v8::FunctionCallbackInfo<v8::Value>& args);
+        static void GetValues(const v8::FunctionCallbackInfo<v8::Value>& args);
         static v8::Persistent<v8::Function> constructor;
 
         RPiGPIOPin SCK_L;  // clock pin left
