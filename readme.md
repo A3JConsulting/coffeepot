@@ -1,38 +1,25 @@
-# projekt `CoffeePot`
+## Projekt `CoffeePot`
 
-## Deltagare
+### Contributors
 - Linus Berggren
 - Olle Karlsson
 - Joakim Lilja
 - David Wickström
 
+### Phase 2
+- #### Day 1
+Solder together components to the scale appliance.
+Merge hardware `hx711` module into GitHub repository.
+Aquire last components (cables, adapters, shrink-hoses). Update `hx711` module to support two circuit-boards. Test `hx711` module with appliance.
 
+- #### Day 2
+Implement the ability to push coffee-status from Raspberry Pi to the client. On unknown state replace Tray-Icon with a spinner. Tune the values for coffee-cups.
 
-## Tillfälle #1
-- Fundera fram en fungerande metod att mäta state på kaffebryggaren
-- Beställa hårdvara
-- Labba med Electron
+- #### Day 3
+Cleanup and package for delivery, final documentation of the solution.
 
-## Tillfälle #2
-- Testa trycksensorer
-- Kompletterande inköp
-- Bygga plattan
-- Fungerande Electron-prototyp för att ta sända bryggarens state över websocket
-- Påbörja arbete med grafisk profil
-
-
-## Tillfälle #3
-- Skriva logik för att detektera de olika skeendena
-- Kalibrering
-- Fortsatt arbete med grafisk profil
-
-## Tillfälle #4
-- Knyta ihop säck
-- Lanseringsfest (kaffe & tårta)
-
-
-
-
+- #### Day 4
+Live demonstration of the appliance.
 
 ### Installation instructions for application:
   * `npm install` @ root
