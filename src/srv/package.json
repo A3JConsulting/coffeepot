@@ -12,6 +12,7 @@
   "dependencies": {
     "csv-parse": "^1.0.2",
     "javascript-state-machine": "^2.3.5",
+    "hx711": "file:./lib/hx711",
     "rx": "^4.0.8",
     "ws": "^1.0.1"
   }

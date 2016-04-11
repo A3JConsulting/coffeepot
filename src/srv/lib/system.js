@@ -3,14 +3,10 @@ module.exports = (function(object){
 
   object.init = function(){
     poll();
-
-    _read("brygger");
-    _read("kanna_borta");
-
     //state.init();
   };
 
-  function _read(file){
+  /*function _read(file){
     const fs = require("fs");
 
     var derp = fs.readFileSync(`${__dirname}/../../${file}`, "utf8").split("\r\n");
@@ -23,7 +19,7 @@ module.exports = (function(object){
     console.log(herp);
     console.log(Math.min(...herp));
     console.log(Math.max(...herp));
-  }
+  }*/
 
   return object;
 }({}));
