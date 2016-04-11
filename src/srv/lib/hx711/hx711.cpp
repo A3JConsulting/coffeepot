@@ -106,7 +106,7 @@ void HX711::GetValues(const FunctionCallbackInfo<Value>& args) {
 
     std::ostringstream retStringStream;
     retStringStream << left << ", " << right;
-    args.GetReturnValue().Set(String::NewFromUtf8(isolate, retStringStream.str().c_str()))
+    args.GetReturnValue().Set(String::NewFromUtf8(isolate, retStringStream.str().c_str()));
 }
 
 // private methods:
