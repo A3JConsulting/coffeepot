@@ -2,6 +2,7 @@
 
 #include <bcm2835.h>
 #include <stdio.h>
+#include <sstream>
 
 #include "hx711.hpp"
 
