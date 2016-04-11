@@ -18,19 +18,23 @@ class HX711 : public node::ObjectWrap {
 
         // node.js wrapper methods
         static void New(const v8::FunctionCallbackInfo<v8::Value>& args);
-        static void GetValue(const v8::FunctionCallbackInfo<v8::Value>& args);
+        static void GetValues(const v8::FunctionCallbackInfo<v8::Value>& args);
         static v8::Persistent<v8::Function> constructor;
 
-        RPiGPIOPin SCK; // clock pin
-        RPiGPIOPin DATA; // data pin
-        uint8_t GAIN; // amplification factor (and channel select)
+        RPiGPIOPin SCK_L;  // clock pin left
+        RPiGPIOPin SCK_R;  // clock pin right
+        RPiGPIOPin DATA_L; // data pin left
+        RPiGPIOPin DATA_R; // data pin right
+        uint8_t GAIN_L; // amplification factor (and channel select)
+        uint8_t GAIN_R; // amplification factor (and channel select)
         uint8_t SCK_HIGH_TIME;
         uint8_t SCK_LOW_TIME;
         uint8_t DATA_DELAY_TIME;
 
-        int32_t getValue();
+        int32_t getLeftValue();
+        int32_t getRightValue();
         int32_t convertToSigned(uint32_t uint);
-        uint32_t getRawBits();
+        uint32_t getRawBits(RPiGPIOPin SCK, RPiGPIOPin DATA, uint8_t GAIN);
 };
 
 } // namespace coffeepot

@@ -2,6 +2,7 @@
 
 #include <bcm2835.h>
 #include <stdio.h>
+#include <sstream>
 
 #include "hx711.hpp"
 
@@ -21,30 +22,40 @@ using v8::Value;
 Persistent<Function> HX711::constructor;
 
 HX711::HX711() {
-    DATA = RPI_GPIO_P1_15;   // GPIO 22
-    SCK = RPI_GPIO_P1_11;    // GPIO 17
-    GAIN = 3;                // 1: channel A gain 128,
-                            // 2: channel B gain 32,
-                            // 3: channel A gain 64
+    DATA_L = RPI_GPIO_P1_15;    // GPIO 22
+    SCK_L = RPI_GPIO_P1_11;     // GPIO 17
+
+    DATA_R = RPI_GPIO_P1_16;    // GPIO 23
+    SCK_R = RPI_GPIO_P1_12;     // GPIO 18
+
+    GAIN_L = 3;                 // 1: channel A gain 128,
+                                // 2: channel B gain 32,
+                                // 3: channel A gain 64
+    GAIN_R = 3;
 
     SCK_HIGH_TIME = 1;      // (after data read) microseconds
     SCK_LOW_TIME = 1;       // microseconds
     DATA_DELAY_TIME = 1;    // microseconds
 
     printf("before init\n");
-    uint8_t success = bcm2835_init(); // TODO check success and throw exception?
+    uint8_t success = bcm2835_init();
     printf("init success: %d\n", success);
 
-    // Set DATA pin to input
-    bcm2835_gpio_fsel(DATA, BCM2835_GPIO_FSEL_INPT);
-    //  with a pull-down
-    bcm2835_gpio_set_pud(DATA, BCM2835_GPIO_PUD_DOWN);
+    // Set DATA pins to input
+    bcm2835_gpio_fsel(DATA_L, BCM2835_GPIO_FSEL_INPT);
+    bcm2835_gpio_fsel(DATA_R, BCM2835_GPIO_FSEL_INPT);
 
-    // Set the SCK to be an output
-    bcm2835_gpio_fsel(SCK, BCM2835_GPIO_FSEL_OUTP);
+    //  with a pull-down resistor
+    bcm2835_gpio_set_pud(DATA_L, BCM2835_GPIO_PUD_DOWN);
+    bcm2835_gpio_set_pud(DATA_R, BCM2835_GPIO_PUD_DOWN);
+
+    // Set the SCK pins to output
+    bcm2835_gpio_fsel(SCK_L, BCM2835_GPIO_FSEL_OUTP);
+    bcm2835_gpio_fsel(SCK_R, BCM2835_GPIO_FSEL_OUTP);
 
     // Set clock low from beginning
-    bcm2835_gpio_write(SCK, LOW);
+    bcm2835_gpio_write(SCK_L, LOW);
+    bcm2835_gpio_write(SCK_R, LOW);
 }
 
 HX711::~HX711() {
@@ -60,7 +71,7 @@ void HX711::Init(Local<Object> exports) {
     tpl->InstanceTemplate()->SetInternalFieldCount(1); // TODO: wtf?
 
     // Prototype
-    NODE_SET_PROTOTYPE_METHOD(tpl, "getValue", GetValue);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "getValues" , GetValues);
 
     constructor.Reset(isolate, tpl->GetFunction());
     exports->Set(
@@ -86,20 +97,27 @@ void HX711::New(const FunctionCallbackInfo<Value>& args) {
     }
 }
 
-void HX711::GetValue(const FunctionCallbackInfo<Value>& args) {
+void HX711::GetValues(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
 
     HX711* obj = ObjectWrap::Unwrap<HX711>(args.Holder());
-    int32_t result = obj->getValue();
+    int32_t left  = obj->getLeftValue();
+    int32_t right = obj->getRightValue();
 
-    args.GetReturnValue().Set(Number::New(isolate, result));
+    std::ostringstream retStringStream;
+    retStringStream << left << ", " << right;
+    args.GetReturnValue().Set(String::NewFromUtf8(isolate, retStringStream.str().c_str()));
 }
-
 
 // private methods:
 
-int32_t HX711::getValue() {
-    uint32_t bits = getRawBits();
+int32_t HX711::getLeftValue() {
+    uint32_t bits = getRawBits(SCK_L, DATA_L, GAIN_L);
+    return convertToSigned(bits);
+}
+
+int32_t HX711::getRightValue() {
+    uint32_t bits = getRawBits(SCK_R, DATA_R, GAIN_R);
     return convertToSigned(bits);
 }
 
@@ -111,7 +129,7 @@ int32_t HX711::convertToSigned(uint32_t uint){
     return uint;
 }
 
-uint32_t HX711::getRawBits()
+uint32_t HX711::getRawBits(RPiGPIOPin SCK, RPiGPIOPin DATA, uint8_t GAIN)
 {
     uint32_t data = 0;
     uint8_t bit = 0;
