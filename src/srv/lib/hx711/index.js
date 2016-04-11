@@ -1,4 +1,4 @@
-module.exports = require('./build/Release/addon');
+module.exports = new (require('./build/Release/addon').HX711)();
 
 /*var fs = require('fs');
 
