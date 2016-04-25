@@ -23,11 +23,11 @@ StateMachine.create({
     console.log(eventName, from, to, args, errorCode, errorMessage)
   },
   events: [
-    { name: 'PotWasRemoved',       from: ['idle', 'brewing'],     to: 'filter_or_pot_removed' },
-    { name: 'PotWasReplaced',      from: 'filter_or_pot_removed', to: 'idle' },
-    { name: 'BrewingWasInitiated', from: 'idle',                  to: 'brewing' },
-    { name: 'BrewingWasResumed',   from: 'filter_or_pot_removed', to: 'brewing' },
-    { name: 'BrewingWasCompleted', from: 'brewing',               to: 'idle' },
+    { name: 'PotWasRemoved',       from: ['idle', 'brewing'],               to: 'filter_or_pot_removed' },
+    { name: 'PotWasReplaced',      from: ['filter_or_pot_removed', 'idle'], to: 'idle' },
+    { name: 'BrewingWasInitiated', from: 'idle',                            to: 'brewing' },
+    { name: 'BrewingWasResumed',   from: 'filter_or_pot_removed',           to: 'brewing' },
+    { name: 'BrewingWasCompleted', from: 'brewing',                         to: 'idle' },
   ],
   callbacks: {
     onPotWasRemoved: function() {
