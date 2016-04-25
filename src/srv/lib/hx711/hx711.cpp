@@ -22,8 +22,8 @@ using v8::Value;
 Persistent<Function> HX711::constructor;
 
 HX711::HX711() {
-    DATA_L = RPI_GPIO_P1_11;    // GPIO 17
-    SCK_L = RPI_GPIO_P1_15;     // GPIO 22
+    DATA_L = RPI_GPIO_P1_15;    // GPIO 22
+    SCK_L = RPI_GPIO_P1_11;     // GPIO 17
 
     DATA_R = RPI_GPIO_P1_16;    // GPIO 23
     SCK_R = RPI_GPIO_P1_12;     // GPIO 18
