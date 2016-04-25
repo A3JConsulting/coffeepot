@@ -1,12 +1,15 @@
 module.exports = (function(object){
   //const poll = require(`${__dirname}/poll`);
   const hx711 = require("hx711");
+  const filter = require("./filter");
 
   object.init = function(){
     //buffer = "";
 
     timer = setInterval(function(){
-    	console.log(hx711.getValues() + "\n");
+      const values = hx711.getValues()
+      const filteredValues = filter(values)
+    	console.log(filteredValues);
     }, 200);
 
     /*
