@@ -1,5 +1,5 @@
-const LEFT_ZERO = 300000
-const RIGHT_ZERO = -200000
+const LEFT_ZERO = 308500
+const RIGHT_ZERO = -288420
 const DIVIDER = 100
 
 const parseLeftRight = val => {
@@ -19,13 +19,13 @@ const setZero = (val) => {
 
 const transform = (val) => {
   return {
-    left: val.left / DIVIDER
-    right: val.right / DIVIDER
+    left: Math.abs(Math.round(val.left / DIVIDER)),
+    right: Math.abs(Math.round(val.right / DIVIDER))
   }
 }
 
-const apply = val => {
+const filter = val => {
   return transform(setZero(parseLeftRight(val)))
 }
 
-module.exports = apply
+module.exports = filter
