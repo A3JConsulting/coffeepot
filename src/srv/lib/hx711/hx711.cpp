@@ -123,6 +123,8 @@ int32_t HX711::getRightValue() {
 
 int32_t HX711::convertToSigned(uint32_t uint){
     // 24bit 2s complement to 32 bit signed conversion
+    printf(uint);
+
     if (uint & 0x800000){
         return uint - 0x1000000;
     }
