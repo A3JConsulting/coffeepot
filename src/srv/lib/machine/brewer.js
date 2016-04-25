@@ -17,7 +17,7 @@ var Brewer = function() {
 }
 
 StateMachine.create({
-  initial: 'brewing', // Ska förmodligen vara 'idle' tänker jag
+  initial: 'idle',
   target: Brewer.prototype,
   error: (eventName, from, to, args, errorCode, errorMessage) => {
     console.log(eventName, from, to, args, errorCode, errorMessage)
@@ -109,6 +109,7 @@ Brewer.prototype.assertBrewingWasInitiated = function(buffer, left, right) {
 Brewer.prototype.setWeights = function(left, right) {
   this.left = left
   this.right = right
+  console.log('Cups:', this.cups)
 }
 
 Brewer.prototype.updateCups = function() {
