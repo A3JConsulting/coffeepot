@@ -1,4 +1,6 @@
 'use strict'
+const hx711 = require('hx711')
+const filter = require('./filter')
 
 const EventEmitter = require('events').EventEmitter
 const Rx = require('rx')
@@ -31,40 +33,6 @@ let weightStream$ = Rx.Observable
   }, [initialState])
   .subscribe(x => console.log('Done.'));
 
-var stream = [
-  { left: 2200, right: 600 }, // Bryggning pågår
-  { left: 2100, right: 700 },
-  { left: 2000, right: 800 },
-  { left: 1900, right: 900 },
-  { left: 1800, right: 1000 },
-  { left: 1800, right: 1100 },
-  { left: 1600, right: 1200 },
-  { left: 1500, right: 1300 },
-  { left: 1500, right: 1300 }, // Bryggning klar
-  { left: 1500, right: 1300 },
-  { left: 1500, right: 1300 },
-  { left: 1500, right: 1300 },
-  { left: 1500, right: 1300 },
-  { left: 1500, right: 1300 },
-  { left: 1500, right: 1300 },
-  { left: 1500, right: 1300 },
-  { left: 1500, right: 1300 },
-  { left: 1500, right: 99 }, // Någon tar bort kannan och häller upp en kopp
-  { left: 1500, right: 99 },
-  { left: 1500, right: 99 },
-  { left: 1500, right: 99 },
-  { left: 1500, right: 99 },
-  { left: 1500, right: 99 },
-  { left: 1500, right: 1100 },
-  { left: 1500, right: 1100 },
-  { left: 1500, right: 1100 },
-  { left: 1500, right: 1100 },
-  { left: 1500, right: 1100 },
-  { left: 1500, right: 1100 },
-  { left: 1500, right: 1100 },
-  { left: 1500, right: 1100 },
-]
-
 function appendToBuffer(buffer, newState) {
   if (buffer.length < STREAM_BUFFER_LENGTH) {
     return [...buffer, newState]
@@ -90,13 +58,10 @@ function logLastFrame(buffer, prop) {
 }
 
 module.exports = function poll() {
-  var tick = 0
   setInterval(function() {
-    if(!stream[tick]){
-      tick = 0;
-    };
-    weightsEmitter.emit('weights', stream[tick].left, stream[tick].right)
-    tick++
+    const values = filter(hx711.getValues())
+    weightsEmitter.emit('weights', values.left, values.right)
+
   }, INPUT_TICK_INTERVAL)
 
 }

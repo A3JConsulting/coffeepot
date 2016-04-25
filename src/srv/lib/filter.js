@@ -1,6 +1,6 @@
 const LEFT_ZERO = 308500
 const RIGHT_ZERO = -288420
-const DIVIDER = 100
+const DIVIDER = 1
 
 const parseLeftRight = val => {
   const values = val.split(', ')
