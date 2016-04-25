@@ -95,8 +95,11 @@ Brewer.prototype.assertBrewingWasResumed = function(buffer, left, right) {
 }
 
 Brewer.prototype.assertPotWasReplaced = function(buffer, left, right) {
-  return buffer[buffer.length -1].right + WEIGHT_OF_POT < right
-  return false // TODO: implement
+  if (left + right > (WEIGHT_OF_EMPTY_BREWER_WITH_POT - 20)
+    && left + right < WEIGHT_OF_EMPTY_BREWER_WITH_POT + 20) {
+    return true
+  }
+  return false
 }
 
 Brewer.prototype.assertBrewingWasInitiated = function(buffer, left, right) {
