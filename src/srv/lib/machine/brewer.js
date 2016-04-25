@@ -117,7 +117,7 @@ Brewer.prototype.updateCups = function() {
 }
 
 Brewer.prototype.calculateCups = function() {
-  return this.right / CUP_WEIGHT // TODO: implementera på riktigt
+  return this.right - 970 / 133
 }
 
 Brewer.prototype.maxCups = function() {
