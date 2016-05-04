@@ -155,7 +155,7 @@ Brewer.prototype.assertPotWasRemoved = function(buffer, currentFrame) {
     const earlierFrame = milliSecondsAgo(buffer, 1500)
     return (earlierFrame.left + earlierFrame.right) > (left + right - WEIGHT_OF_POT)
   }
-  return false
+  return false // Avoid initial undefined answer
 }
 
 /**
@@ -200,7 +200,7 @@ Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
  * If the weight has increased on the right side
  * in at least 3 frames
  * AND
- * Not the inverse in any of the investigated frames
+ * TODO: Not the inverse in any of the investigated frames
  * @return boolean
  */
 Brewer.prototype.assertBrewingWasInitiated = function(buffer, currentFrame) {
@@ -213,7 +213,7 @@ Brewer.prototype.assertBrewingWasInitiated = function(buffer, currentFrame) {
     acc.leftToRightFlows = weightFlowsToTheRight(previousFrame, currentFrame, acc.leftToRightFlows)
     acc.buffer = [...acc.buffer, currentFrame]
     return acc
-  }, { buffer: [currentFrame], leftToRightFlows: 0 })
+  }, { buffer: [buffer[0]], leftToRightFlows: 0 })
 
   return analysedBuffer.leftToRightFlows > 2
 }
