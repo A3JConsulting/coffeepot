@@ -1,29 +1,20 @@
 'use strict'
 const hx711 = require('hx711')
 const filter = require('./filter')
-
 const EventEmitter = require('events').EventEmitter
 const Rx = require('rx')
 const guessNextState = require('./guess')
 const weightsEmitter = new EventEmitter()
-
-const INPUT_TICK_INTERVAL = 500 // milliseconds
-const BUFFER_TIME = 10 // seconds
+const { INPUT_TICK_INTERVAL, BUFFER_TIME, IDLE } = require('./constants')
 const STREAM_BUFFER_LENGTH = (BUFFER_TIME * 1000) / INPUT_TICK_INTERVAL // ticks
+let brewer = new (require('./brewer'));
 
-let brewer = new (require('./machine/brewer'));
-
-const initialState = {
-  state: 'idle',
-  left: 0,
-  right: 0,
-}
-
+const initialState = { previousState: null, state: IDLE, left: 0, right: 0 }
 let weightStream$ = Rx.Observable
   .fromEvent(weightsEmitter, 'weights', (left, right) => {
     return {left: left, right: right}
   })
-  .filter(x => x) // TODO: bort med signalbrus
+  .filter(x => x) // TODO: bort med brus
   .reduce((buffer, current) => {
     logCurrentState(brewer)
     logLastFrame(buffer)
@@ -42,10 +33,6 @@ function appendToBuffer(buffer, newState) {
   }
 }
 
-function getPreviousFrame(buffer) {
-  return buffer[buffer.length -1] || null
-}
-
 function logCurrentState(brewer) {
   console.log('\x1b[33m%s\x1b[0m', brewer.current);
 }
@@ -59,9 +46,9 @@ function logLastFrame(buffer, prop) {
 
 module.exports = function poll() {
   setInterval(function() {
+    // const values = {left: 1700, right: 2200}
     const values = filter(hx711.getValues())
     weightsEmitter.emit('weights', values.left, values.right)
-
   }, INPUT_TICK_INTERVAL)
 
 }

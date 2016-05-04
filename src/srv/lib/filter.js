@@ -10,14 +10,14 @@ const parseLeftRight = val => {
   }
 }
 
-const setZero = (val) => {
+const setZero = val => {
   return {
     left: val.left + LEFT_ZERO,
     right: val.right + RIGHT_ZERO
   }
 }
 
-const transform = (val) => {
+const transform = val => {
   return {
     left: Math.abs(Math.round(val.left / DIVIDER)),
     right: Math.abs(Math.round(val.right / DIVIDER))
