@@ -1,5 +1,5 @@
 const milliSecondsToTicks = milliSeconds => {
-  return milliseconds / INPUT_TICK_INTERVAL
+  return Math.round(milliseconds / INPUT_TICK_INTERVAL)
 }
 
 const milliSecondsAgo = (buffer, milliSeconds) => {
