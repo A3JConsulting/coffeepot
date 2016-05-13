@@ -53,7 +53,10 @@ StateMachine.create({
     },
     onBrewingWasCompleted: function() {
       this.logTransition('Brewing was completed')
-      this.sendState('onBrewingWasCompleted', true)
+      setTimeout(() => {
+        this.sendState('onBrewingWasCompleted', true)
+      }, 2000)
+      this.sendStatePreview('onBrewingWasCompleted', true)
     },
 
   }
@@ -61,6 +64,10 @@ StateMachine.create({
 
 Brewer.prototype.logTransition = function(transition) {
   console.log('\x1b[32m%s\x1b[0m', transition);
+}
+
+Brewer.prototype.sendStatePreview = function(event, sendCups) {
+  console.log('[HUPP!] Förvarning om nybryggt kaffe! Bra eller dåligt? (Man behöver sannolikt servera kaffe till andra...)')
 }
 
 /**
@@ -92,20 +99,32 @@ Brewer.prototype.sendState = function(event, sendCups) {
   }
 }
 
+/**
+ * @return void
+ */
 Brewer.prototype.setWeights = function(left, right) {
   this.left = left
   this.right = right
   console.log('Cups:', (this.cups < 0) ? 0 : this.cups)
 }
 
+/**
+ * @return int
+ */
 Brewer.prototype.getTotalWeight = function() {
   return this.left + this.right
 }
 
+/**
+ * @return void
+ */
 Brewer.prototype.updateCups = function() {
   this.cups = this.calculateCups()
 }
 
+/**
+ * @return void
+ */
 Brewer.prototype.calculateCups = function() {
   // total_cups
   // TODO: gör en funktion som fungerar oavsett om state är IDLE/BREWING
@@ -204,6 +223,9 @@ Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
  * @return boolean
  */
 Brewer.prototype.assertBrewingWasInitiated = function(buffer, currentFrame) {
+
+  return false // debugging
+
   const weightFlowsToTheRight = (prev, curr, acc) => {
     return (prev.right < curr.right && prev.left > curr.left) ? acc + 1 : acc
   }
@@ -215,7 +237,7 @@ Brewer.prototype.assertBrewingWasInitiated = function(buffer, currentFrame) {
     return acc
   }, { buffer: [buffer[0]], leftToRightFlows: 0 })
 
-  return analysedBuffer.leftToRightFlows > 2
+  return analysedBuffer.leftToRightFlows > 5
 }
 
 module.exports = Brewer
