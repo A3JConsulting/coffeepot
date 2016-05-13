@@ -36,5 +36,22 @@ module.exports = (function(object){
     });
   };
 
+  object.sendToClient = function(id, msg){
+    const client = wss.clients.find(function(client){
+      return client.id === id;
+    });
+    client.send(msg);
+  }
+
+  object.sendToAdmins = function(msg){
+    wss.clients
+      .filter(function(client){
+        return client.isAdmin && client.isAdmin === true;
+      })
+      .forEach(function each(client) {
+        client.send(msg);
+    });
+  }
+
   return object;
 }({}));

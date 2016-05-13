@@ -132,7 +132,7 @@ Brewer.prototype.calculateCups = function() {
   // när state är BREWING, eftersom frontend ändå inte visar ut antal koppar
   // under bryggning...?
   //
-  return (this.right - 970) / 133
+  return (this.right - 1121) / 133
 }
 
 Brewer.prototype.maxCups = function() {
@@ -165,16 +165,28 @@ Brewer.prototype.assertBrewingWasCompleted = function(buffer, currentFrame) {
  */
 Brewer.prototype.assertPotWasRemoved = function(buffer, currentFrame) {
   const { left, right } = currentFrame
-  if (currentFrame.state === IDLE) {
-    // Vikten är mindre än tom bryggare minus kannans vikt...
-    return (left + right) < WEIGHT_OF_EMPTY_BREWER_WITH_POT
+  if (this.current === IDLE) {
+    // Vikten är mindre än tom bryggare minus kannans vikt och lite marginal...
+    return (left + right) < (WEIGHT_OF_EMPTY_BREWER_WITH_POT - 200)
   }
-  if (currentFrame.state === BREWING) {
+  if (this.current === BREWING) {
     // Om bryggning pågår, och vikten minskar "mycket"...
     const earlierFrame = milliSecondsAgo(buffer, 1500)
     return (earlierFrame.left + earlierFrame.right) > (left + right - WEIGHT_OF_POT)
   }
   return false // Avoid initial undefined answer
+}
+
+/**
+ * Weight is more than empty brewer with pot removed
+ * AND
+ * the previous state was "IDLE"
+ * @return boolean
+ */
+Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
+  const { left, right } = currentFrame
+  return this.weightIsMoreThanEmptyBrewer(left, right)
+    //&& currentFrame.previousState === IDLE
 }
 
 /**
@@ -196,19 +208,8 @@ Brewer.prototype.assertBrewingWasResumed = function(buffer, currentFrame) {
  * @return boolean
  */
 Brewer.prototype.weightIsMoreThanEmptyBrewer = function(left, right)  {
-  const ERROR_MARGIN = 10 // grams
+  const ERROR_MARGIN = 50 // grams
   return (left + right) > (WEIGHT_OF_EMPTY_BREWER_WITH_POT - ERROR_MARGIN)
-}
-
-/**
- * Weight is more than empty brewer with pot removed
- * AND
- * the previous state was "IDLE"
- * @return boolean
- */
-Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
-  const { left, right } = currentFrame
-  return this.weightIsMoreThanEmptyBrewer(left, right) && currentFrame.previousState === IDLE
 }
 
 /**

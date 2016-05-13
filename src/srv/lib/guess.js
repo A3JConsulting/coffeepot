@@ -1,7 +1,11 @@
 'use strict'
+const {getPreviousFrame} = require('./syste')
+
 module.exports = function guessNextState(buffer, current, brewer) {
   const possibleTransitions = (brewer.transitions()) ? brewer.transitions() : []
-  const previousState = brewer.current
+  const previousFrame = getPreviousFrame(buffer)
+  const previousState = previousFrame.previousState
+  const currentState = brewer.current
 
   possibleTransitions.forEach(transition => {
     const assertion = `assert${transition}`
@@ -9,7 +13,7 @@ module.exports = function guessNextState(buffer, current, brewer) {
     if (brewer[assertion](buffer, current)) {
       brewer[transition]() // call transition method on the brewer
       return {
-        previousState: previousState,
+        previousState: currentState,
         state: brewer.current,
         left: current.left,
         right: current.right,
@@ -19,8 +23,8 @@ module.exports = function guessNextState(buffer, current, brewer) {
   // Send cups value to client
   brewer.sendState(null, true)
   return {
-    previousState: current.previousState || null,
-    state: brewer.current,
+    previousState: previousState || brewer.current,
+    state: currentState,
     left: current.left,
     right: current.right,
   }
