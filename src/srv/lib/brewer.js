@@ -215,10 +215,10 @@ Brewer.prototype.weightIsMoreThanEmptyBrewer = function(left, right)  {
 /**
  * Loop over the entire buffer:
  * If the weight has decreased on the left side
- * in at least 3 frames
+ * in at least X frames
  * AND
  * If the weight has increased on the right side
- * in at least 3 frames
+ * in at least X frames
  * AND
  * TODO: Not the inverse in any of the investigated frames
  * @return boolean
