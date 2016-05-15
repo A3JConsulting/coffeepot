@@ -1,7 +1,6 @@
 'use strict'
-const hx711 = require('hx711')
 const filter = require('./filter')
-const Observable = require('rx').Observable
+const {Observable} = require('rx')
 const guessNextState = require('./guess')
 const { INPUT_TICK_INTERVAL, BUFFER_TIME, IDLE } = require('./constants')
 const STREAM_BUFFER_LENGTH = (BUFFER_TIME * 1000) / INPUT_TICK_INTERVAL // ticks
@@ -27,22 +26,35 @@ function logLastFrame(buffer, prop) {
   console.log(last)
 }
 
-const initialState = { previousState: null, state: IDLE, left: 0, right: 0 }
+const testStream = (function() {
+  return JSON.parse(require('fs').readFileSync(`${__dirname}/data.json`).toString())
+})()
 
-module.exports = function poll() {
+let i = 0
+const getTick = () => {
+  const tick = testStream[i]
+  i++
+  return tick
+}
+const weight = debug => debug ? getTick() : filter(require('hx711').getValues())
+const initialState = [{ previousState: null, state: IDLE, left: 0, right: 0 }]
+
+module.exports = function poll(debug = false) {
   Observable
     .interval(INPUT_TICK_INTERVAL)
-    .map(t => filter(hx711.getValues()))
+    .map(tick => weight(debug))
     .filter(x => x)
     .scan((buffer, current) => {
       brewer.setWeights(current.left, current.right)
       const nextState = guessNextState(buffer, current, brewer)
       return appendToBuffer(buffer, nextState)
-    }, [initialState])
+    }, initialState)
     .subscribe(
       buffer => {
+        console.log()
         logCurrentState(brewer)
         logLastFrame(buffer)
+        console.log('Cups:', Math.round(brewer.calculateCups()))
       },
       err => console.error(err),
       () => console.log('Done.')

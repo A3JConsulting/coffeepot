@@ -25,7 +25,7 @@ StateMachine.create({
   initial: IDLE,
   target: Brewer.prototype,
   error: (eventName, from, to, args, errorCode, errorMessage) => {
-    console.log(eventName, from, to, args, errorCode, errorMessage)
+    console.error(eventName, from, to, args, errorCode, errorMessage)
   },
   events: [
     { name: 'PotWasRemoved',       from: [IDLE, BREWING],                 to: FILTER_OR_POT_REMOVED },
@@ -105,7 +105,6 @@ Brewer.prototype.sendState = function(event, sendCups) {
 Brewer.prototype.setWeights = function(left, right) {
   this.left = left
   this.right = right
-  console.log('Cups:', (this.cups < 0) ? 0 : this.cups)
 }
 
 /**

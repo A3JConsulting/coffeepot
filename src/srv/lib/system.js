@@ -1,9 +1,12 @@
+const {INPUT_TICK_INTERVAL} = require('./constants')
 const milliSecondsToTicks = milliSeconds => {
-  return Math.round(milliseconds / INPUT_TICK_INTERVAL)
+  return Math.round(milliSeconds / INPUT_TICK_INTERVAL)
 }
 
 const milliSecondsAgo = (buffer, milliSeconds) => {
-  return buffer[buffer.length - milliSecondsToTicks(milliSeconds)]
+  const ticksAgo = (buffer.length) ? 0 : buffer.length - milliSecondsToTicks(milliSeconds)
+  console.log(buffer[ticksAgo]);
+  return buffer[ticksAgo]
 };
 
 const getPreviousFrame = buffer => {

@@ -20,3 +20,4 @@ Coffeepot-darwin-x64/
 *.raw
 *.psd
 /bin/
+/src/srv/lib/*.json

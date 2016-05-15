@@ -1,16 +1,16 @@
 {
   "name": "coffeepot_srv",
   "version": "1.0.0",
-  "description": "command and control for coffeepot.",
+  "description": "Command and control for coffeepot.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node --harmony-destructuring index.js"
+    "start": "node --harmony-destructuring --harmony_default_parameters index.js",
+    "record": "node --harmony-destructuring --harmony_default_parameters lib/record.js"
   },
-  "author": "Linus Berggren",
+  "author": "Linus, Joakim, Olle, David",
   "license": "ISC",
   "dependencies": {
-    "csv-parse": "^1.0.2",
     "javascript-state-machine": "^2.3.5",
     "hx711": "file:./lib/hx711",
     "rx": "^4.0.8",
