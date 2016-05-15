@@ -18,7 +18,7 @@ module.exports = function guessNextState(buffer, current, brewer) {
   }
   brewer.sendState(null, true) // Send cups value to client
   return {
-    previousState: previousState || brewer.current,
+    previousState: previousState || null,
     state: currentState,
     left: current.left,
     right: current.right,
