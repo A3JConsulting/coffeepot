@@ -36,23 +36,18 @@ StateMachine.create({
   ],
   callbacks: {
     onPotWasRemoved: function() {
-      this.logTransition('Pot was removed')
       this.sendState('onPotWasRemoved', false)
     },
     onPotWasReplaced: function() {
-      this.logTransition('Pot was replaced')
       this.sendState('onPotWasReplaced', true)
     },
     onBrewingWasInitiated: function() {
-      this.logTransition('Brewing was initiated')
       this.sendState('onBrewingWasInitiated', true)
     },
     onBrewingWasResumed: function() {
-      this.logTransition('Brewing was resumed')
       this.sendState('onBrewingWasResumed', true)
     },
     onBrewingWasCompleted: function() {
-      this.logTransition('Brewing was completed')
       setTimeout(() => {
         this.sendState('onBrewingWasCompleted', true)
       }, 2000)
@@ -185,7 +180,7 @@ Brewer.prototype.assertPotWasRemoved = function(buffer, currentFrame) {
 Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
   const { left, right } = currentFrame
   return this.weightIsMoreThanEmptyBrewer(left, right)
-    //&& currentFrame.previousState === IDLE
+    && currentFrame.previousState === IDLE
 }
 
 /**

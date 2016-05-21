@@ -11,4 +11,5 @@ module.exports = Object.freeze({
 
   INPUT_TICK_INTERVAL: 500, // Hur ofta ska det pollas?
   BUFFER_TIME: 10, // Hur mycket ska det buffras, i sekunder?
+  INITIAL_STATE: [{ previousState: null, state: this.IDLE, left: 0, right: 0 }],
 });

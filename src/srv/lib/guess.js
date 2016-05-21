@@ -1,7 +1,8 @@
 'use strict'
-const {getPreviousFrame} = require('./system')
 
 module.exports = function guessNextState(buffer, current, brewer) {
+  const {getPreviousFrame} = require('./system')
+  brewer.setWeights(current.left, current.right)
   const possibleTransitions = (brewer.transitions()) ? brewer.transitions() : []
   const previousState = getPreviousFrame(buffer).previousState
   const currentState = brewer.current

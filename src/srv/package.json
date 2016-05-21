@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node --harmony-destructuring --harmony_default_parameters index.js",
-    "record": "node --harmony-destructuring --harmony_default_parameters lib/record.js"
+    "sample": "node --harmony-destructuring --harmony_default_parameters lib/sampler.js"
   },
   "author": "Linus, Joakim, Olle, David",
   "license": "ISC",
