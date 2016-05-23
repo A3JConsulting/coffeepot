@@ -1,5 +1,5 @@
-const LEFT_ZERO = 309160
-const RIGHT_ZERO = -286262
+const LEFT_ZERO = 309153
+const RIGHT_ZERO = -286284
 const DIVIDER = 335
 
 const parseLeftRight = val => {
