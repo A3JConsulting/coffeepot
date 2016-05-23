@@ -7,7 +7,7 @@
 
 
 
-#Coffee brewing DIY team project by A3J
+# Coffee brewing DIY team project by A3J
 Early 2016 we set off to once and for all rectify all our worries surrounding the daily brewing routines. The result is this DYI project that enables us (you) to view the state of the coffee brewer in your (our) OSX app tray. Which in turn enables us (you) to make more qualified decisions with regards to the planning of your coffee fetching promenades.
 
 

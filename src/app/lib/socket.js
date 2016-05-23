@@ -18,8 +18,14 @@ module.exports = (function(object){
       ipc.send("change-tray-icon", "state_"+payload+".png");
     }
   };
-  object.BREWING = function(){
+  object.BREWING = function(payload){
+    if(payload.event === "brewingWasInitiated"){
+      new Notification("Brewing initiated!", {
+        body: "Coffee's on it's way."
+      });
+    }
 
+    ipc.send("change-tray-icon", "state_0.png");
   };
   object.FILTER_OR_POT_REMOVED = function(payload){
     new Notification("The coffeepot is removed!", {
