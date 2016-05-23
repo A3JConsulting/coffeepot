@@ -131,7 +131,7 @@ Brewer.prototype.calculateCups = function() {
   // när state är BREWING, eftersom frontend ändå inte visar ut antal koppar
   // under bryggning...?
   //
-  return ((this.current.left + this.current.right) - WEIGHT_OF_EMPTY_BREWER_WITH_POT) / CUP_WEIGHT
+  return ((this.left + this.right) - WEIGHT_OF_EMPTY_BREWER_WITH_POT) / CUP_WEIGHT
 }
 
 Brewer.prototype.maxCups = function() {
