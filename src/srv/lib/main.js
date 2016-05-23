@@ -4,6 +4,9 @@ const {Observable} = require('rx')
 const guessNextState = require('./guess')
 const {appendToBuffer, logCurrentState, logLastFrame, handleState} = require('./system')
 const {INPUT_TICK_INTERVAL, INITIAL_STATE} = require('./constants')
+Number.prototype.between = function(min, max) {
+  return this > min && this < max
+}
 
 const testStream = (function() {
   return require('./data.json')
