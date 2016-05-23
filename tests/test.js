@@ -81,10 +81,10 @@ test('it detects when brewing has started', t => {
 test('it detects when brewing is completed', t => {
   assertFinalState(createStreamFrom('brewing-completed.json'), IDLE, t)
 })
-//
-// test('it detects when brewing is paused', t => {
-//   t.fail()
-// })
+
+test('it detects when brewing is paused', t => {
+  assertFinalState(createStreamFrom('brewing-completed02.json'), IDLE, t)
+})
 //
 // test('it detects when brewing is resumed', t => {
 //   t.fail()
