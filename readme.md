@@ -7,8 +7,8 @@
 
 
 
-###Coffee brewing dyi team project by A3J
-Early 2016 we set off to once and for all rectify all our worries surrounding our daily brewing routines. The result is this DYI project that enables you to view the state of the your coffee brewer in your OSX app tray. Which in turn enables you to make more qualified decisions with regards to the planning of your coffee fetching promenades.
+#Coffee brewing DIY team project by A3J
+Early 2016 we set off to once and for all rectify all our worries surrounding the daily brewing routines. The result is this DYI project that enables us (you) to view the state of the coffee brewer in your (our) OSX app tray. Which in turn enables us (you) to make more qualified decisions with regards to the planning of your coffee fetching promenades.
 
 
 ## The scale
@@ -38,8 +38,9 @@ In order to make it easier to detect states, a finite state machine was implemen
 - ws (Websockets)
 - Electron
 
-## run(this)
+## Run
 The software is divided into two parts, the electron app and the server that is responsable for communicating with the scale and distributing messages to the electron app instances over websocket connections.
+[...]
 
 ## What the future looks like
 Here are a few ideas that has been mentioned regarding future development of this app:

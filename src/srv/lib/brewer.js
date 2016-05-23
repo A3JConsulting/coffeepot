@@ -37,26 +37,26 @@ StateMachine.create({
   callbacks: {
     onPotWasRemoved: function() {
       // this.logTransition('onPotWasRemoved')
-      this.sendState('onPotWasRemoved', false)
+      this.sendState('potWasRemoved', false)
     },
     onPotWasReplaced: function() {
       // this.logTransition('onPotWasReplaced')
-      this.sendState('onPotWasReplaced', true)
+      this.sendState('potWasReplaced', true)
     },
     onBrewingWasInitiated: function() {
       // this.logTransition('onBrewingWasInitiated')
-      this.sendState('onBrewingWasInitiated', true)
+      this.sendState('brewingWasInitiated', true)
     },
     onBrewingWasResumed: function() {
       // this.logTransition('onBrewingWasResumed')
-      this.sendState('onBrewingWasResumed', true)
+      this.sendState('brewingWasResumed', true)
     },
     onBrewingWasCompleted: function() {
       setTimeout(() => {
-        this.sendState('onBrewingWasCompleted', true)
-      }, 2000)
+        this.sendState('brewingWasCompleted', true)
+      }, 10000)
       // this.logTransition('onBrewingWasCompleted')
-      this.sendStatePreview('onBrewingWasCompleted', true)
+      this.sendStatePreview('brewingWasCompleted', true)
     },
 
   }
