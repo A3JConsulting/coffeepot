@@ -19,7 +19,11 @@ module.exports = (function(object){
     }
   };
   object.BREWING = function(){
+    new Notification("Brewing initiated!", {
+      body: "Coffee's on it's way."
+    });
 
+    ipc.send("change-tray-icon", "state_0.png");
   };
   object.FILTER_OR_POT_REMOVED = function(payload){
     new Notification("The coffeepot is removed!", {
