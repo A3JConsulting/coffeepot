@@ -4,19 +4,24 @@ module.exports = (function(object){
   var ipc = require("ipc");
 
   object.connect = function(){
-    var websocket = new WebSocket("ws://coffeepot.local:8080");
+    var websocket = new WebSocket("ws://172.30.33.77:8080");
 
     _parse(websocket);
   };
-  object.idle = function(payload){
+  object.IDLE = function(payload){
     /*new Notification("Coffee consumed!", {
       title: payload.message.title,
       body: payload.message.body,
       icon: ""
     });*/
-    ipc.send("change-tray-icon", "state_"+payload+".png");
+    if(payload < 11){
+      ipc.send("change-tray-icon", "state_"+payload+".png");
+    }
   };
-  object.filter_or_pot_removed = function(payload){
+  object.BREWING = function(){
+
+  };
+  object.FILTER_OR_POT_REMOVED = function(payload){
     new Notification("The coffeepot is removed!", {
       body: "Possible consumption."
     });
