@@ -148,7 +148,6 @@ Brewer.prototype.assertBrewingWasCompleted = function(buffer, currentFrame) {
   // TODO: alternativt så kollar man om vikten har stabiliserat sig över tid
   // vilket borde indikera att det bryggt klart
   const ERROR_MARGIN = 0.25
-  console.log('FOOBAR',this.calculateCups());
   return this.calculateCups() > (this.maxCups() - ERROR_MARGIN)
 }
 

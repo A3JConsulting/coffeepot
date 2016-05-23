@@ -45,7 +45,6 @@ const createStreamFrom = fixture => {
     })
     .map(x => x[1])
     .scan((buffer, current) => {
-      console.log(current);
       return handleState(buffer, current, brewer)
     }, INITIAL_STATE)
 }
