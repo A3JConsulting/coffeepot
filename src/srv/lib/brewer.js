@@ -180,7 +180,7 @@ Brewer.prototype.assertPotWasRemoved = function(buffer, currentFrame) {
 Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
   const { left, right } = currentFrame
   return this.weightIsMoreThanEmptyBrewer(left, right)
-    && currentFrame.previousState === IDLE
+    // && currentFrame.previousState === IDLE
 }
 
 /**
