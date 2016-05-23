@@ -36,21 +36,26 @@ StateMachine.create({
   ],
   callbacks: {
     onPotWasRemoved: function() {
+      // this.logTransition('onPotWasRemoved')
       this.sendState('onPotWasRemoved', false)
     },
     onPotWasReplaced: function() {
+      // this.logTransition('onPotWasReplaced')
       this.sendState('onPotWasReplaced', true)
     },
     onBrewingWasInitiated: function() {
+      // this.logTransition('onBrewingWasInitiated')
       this.sendState('onBrewingWasInitiated', true)
     },
     onBrewingWasResumed: function() {
+      // this.logTransition('onBrewingWasResumed')
       this.sendState('onBrewingWasResumed', true)
     },
     onBrewingWasCompleted: function() {
       setTimeout(() => {
         this.sendState('onBrewingWasCompleted', true)
       }, 2000)
+      // this.logTransition('onBrewingWasCompleted')
       this.sendStatePreview('onBrewingWasCompleted', true)
     },
 
@@ -139,9 +144,11 @@ Brewer.prototype.maxCups = function() {
  * @return boolean
  */
 Brewer.prototype.assertBrewingWasCompleted = function(buffer, currentFrame) {
+  // return false
   // TODO: alternativt så kollar man om vikten har stabiliserat sig över tid
   // vilket borde indikera att det bryggt klart
   const ERROR_MARGIN = 0.25
+  console.log('FOOBAR',this.calculateCups());
   return this.calculateCups() > (this.maxCups() - ERROR_MARGIN)
 }
 
@@ -166,7 +173,7 @@ Brewer.prototype.assertPotWasRemoved = function(buffer, currentFrame) {
   if (this.current === BREWING) {
     // Om bryggning pågår, och vikten minskar "mycket"...
     const earlierFrame = milliSecondsAgo(buffer, 1500)
-    return (earlierFrame.left + earlierFrame.right) > (left + right - WEIGHT_OF_POT)
+    return (earlierFrame.left + earlierFrame.right) > (left + right + WEIGHT_OF_POT + 50)
   }
   return false // Avoid initial undefined answer
 }
@@ -192,9 +199,10 @@ Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
  * @return boolean
  */
 Brewer.prototype.assertBrewingWasResumed = function(buffer, currentFrame) {
+  const ERROR_MARGIN = 50
   return currentFrame.previousState === BREWING
     && currentFrame.state === FILTER_OR_POT_REMOVED
-    && currentFrame.right > milliSecondsAgo(buffer, 2500).right
+    && currentFrame.right > milliSecondsAgo(buffer, 2500).right + ERROR_MARGIN
 }
 
 /**
@@ -218,8 +226,6 @@ Brewer.prototype.weightIsMoreThanEmptyBrewer = function(left, right)  {
  * @return boolean
  */
 Brewer.prototype.assertBrewingWasInitiated = function(buffer, currentFrame) {
-
-  return false // debugging
 
   const weightFlowsToTheRight = (prev, curr, acc) => {
     return (prev.right < curr.right && prev.left > curr.left) ? acc + 1 : acc

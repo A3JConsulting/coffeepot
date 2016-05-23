@@ -23,13 +23,18 @@ module.exports = function main(debug = false) {
   Observable
     .interval(INPUT_TICK_INTERVAL)
     .map(tick => weight(debug))
-    .filter(x => x)
+    .bufferWithCount(2)
+    .filter(x => {
+      const min = x[0].right - 50
+      const max = x[0].right + 50
+      return x[0].right.between(min, max)
+    })
+    .map(x => x[1])
     .scan((buffer, current) => {
       return handleState(buffer, current, brewer)
     }, INITIAL_STATE)
     .subscribe(
       buffer => {
-        console.log()
         logCurrentState(brewer)
         logLastFrame(buffer)
         console.log('Cups:', Math.round(brewer.calculateCups()))
