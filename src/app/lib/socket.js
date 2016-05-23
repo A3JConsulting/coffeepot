@@ -18,11 +18,12 @@ module.exports = (function(object){
       ipc.send("change-tray-icon", "state_"+payload+".png");
     }
   };
-  object.BREWING = function(){
-
-    /*new Notification("Brewing initiated!", {
-      body: "Coffee's on it's way."
-    });*/
+  object.BREWING = function(payload){
+    if(payload.event === "brewingWasInitiated"){
+      new Notification("Brewing initiated!", {
+        body: "Coffee's on it's way."
+      });
+    }
 
     ipc.send("change-tray-icon", "state_0.png");
   };
