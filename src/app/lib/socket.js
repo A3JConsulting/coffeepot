@@ -19,9 +19,10 @@ module.exports = (function(object){
     }
   };
   object.BREWING = function(){
-    new Notification("Brewing initiated!", {
+
+    /*new Notification("Brewing initiated!", {
       body: "Coffee's on it's way."
-    });
+    });*/
 
     ipc.send("change-tray-icon", "state_0.png");
   };
