@@ -237,7 +237,7 @@ Brewer.prototype.assertBrewingWasInitiated = function(buffer, currentFrame) {
     return acc
   }, { buffer: [buffer[0]], leftToRightFlows: 0 })
 
-  return analysedBuffer.leftToRightFlows > 5
+  return analysedBuffer.leftToRightFlows > 10
 }
 
 module.exports = Brewer
