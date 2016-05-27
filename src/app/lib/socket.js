@@ -4,7 +4,7 @@ module.exports = (function(object){
   var ipc = require("ipc");
 
   object.connect = function(){
-    var websocket = new WebSocket("ws://172.30.33.77:8080");
+    var websocket = new WebSocket("ws://172.30.33.96:8080");
 
     _parse(websocket);
   };
