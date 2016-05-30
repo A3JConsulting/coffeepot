@@ -126,11 +126,10 @@ Brewer.prototype.updateCups = function() {
  */
 Brewer.prototype.calculateCups = function() {
   // total_cups
-  // TODO: gör en funktion som fungerar oavsett om state är IDLE/BREWING
-  // Egentligen är det kanske inte nödvändigt att kunna räkna ut antal koppar
-  // när state är BREWING, eftersom frontend ändå inte visar ut antal koppar
-  // under bryggning...?
-  //
+  // TODO: bryggningen kommer att detekteras som klar om den här funktionen inte
+  // kan reda ut hur många koppar som är klara, den får inte vara samma som this.maxCups!!!
+  // ELLER så kan man detektera att bryggning är klar på annat sätt, t ex om vikten stabiliserat sig
+  // över tid
   return ((this.left + this.right) - WEIGHT_OF_EMPTY_BREWER_WITH_POT) / CUP_WEIGHT
 }
 
@@ -144,11 +143,18 @@ Brewer.prototype.maxCups = function() {
  * @return boolean
  */
 Brewer.prototype.assertBrewingWasCompleted = function(buffer, currentFrame) {
-  // return false
-  // TODO: alternativt så kollar man om vikten har stabiliserat sig över tid
-  // vilket borde indikera att det bryggt klart
-  const ERROR_MARGIN = 0.25
-  return this.calculateCups() > (this.maxCups() - ERROR_MARGIN)
+  const weightFlowsToTheRight = (prev, curr, acc) => {
+    return (prev.right < curr.right && prev.left > curr.left) ? acc + 1 : acc
+  }
+
+  const analysedBuffer = buffer.reduce(function(acc, currentFrame) {
+    const previousFrame = acc.buffer[acc.buffer.length - 1]
+    acc.leftToRightFlows = weightFlowsToTheRight(previousFrame, currentFrame, acc.leftToRightFlows)
+    acc.buffer = [...acc.buffer, currentFrame]
+    return acc
+  }, { buffer: [buffer[0]], leftToRightFlows: 0 })
+
+  return analysedBuffer.leftToRightFlows < 5
 }
 
 /**
