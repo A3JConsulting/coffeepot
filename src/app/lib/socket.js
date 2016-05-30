@@ -36,14 +36,14 @@ module.exports = (function(object){
   };
   function _parse(ws){
     ws.onmessage = function(blob){
-      var data = JSON.parse(blob.data);
+      var payload = JSON.parse(blob.data);
       //Debug
-      console.log(data);
+      console.debug(payload);
 
       try{
-        object[data.state](data.cups);
+        object[data.state](payload);
       }catch(e){
-        throw e;
+        console.error(e)
       }
     };
   }
