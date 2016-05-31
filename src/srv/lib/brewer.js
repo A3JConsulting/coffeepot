@@ -9,7 +9,9 @@ const {
   CUP_WEIGHT,
   MINIMUM_BREW,
   IDLE,
+  PREPARED_FOR_BREWING,
   BREWING,
+  BREWING_PAUSED,
   FILTER_OR_POT_REMOVED,
   INPUT_TICK_INTERVAL,
   BUFFER_TIME
@@ -28,34 +30,44 @@ StateMachine.create({
     console.error(eventName, from, to, args, errorCode, errorMessage)
   },
   events: [
-    { name: 'PotWasRemoved',       from: [IDLE, BREWING],                 to: FILTER_OR_POT_REMOVED },
-    { name: 'PotWasReplaced',      from: FILTER_OR_POT_REMOVED,           to: IDLE },
-    { name: 'BrewingWasInitiated', from: IDLE,                            to: BREWING },
-    { name: 'BrewingWasResumed',   from: FILTER_OR_POT_REMOVED,           to: BREWING },
-    { name: 'BrewingWasCompleted', from: BREWING,                         to: IDLE },
+    { name: 'BrewerWasFilledWithWater', from: [IDLE, FILTER_OR_POT_REMOVED],  to: PREPARED_FOR_BREWING },
+    { name: 'BrewingWasHalted',         from: BREWING,                        to: BREWING_PAUSED },
+    { name: 'PotWasRemoved',            from: IDLE,                           to: FILTER_OR_POT_REMOVED },
+    { name: 'PotWasReplaced',           from: FILTER_OR_POT_REMOVED,          to: IDLE },
+    { name: 'BrewingWasInitiated',      from: PREPARED_FOR_BREWING,           to: BREWING },
+    { name: 'BrewingWasResumed',        from: BREWING_PAUSED,                 to: BREWING },
+    { name: 'BrewingWasCompleted',      from: BREWING,                        to: IDLE },
   ],
   callbacks: {
     onPotWasRemoved: function() {
-      // this.logTransition('onPotWasRemoved')
+      this.logTransition('onPotWasRemoved')
       this.sendState('potWasRemoved', false)
     },
     onPotWasReplaced: function() {
-      // this.logTransition('onPotWasReplaced')
+      this.logTransition('onPotWasReplaced')
       this.sendState('potWasReplaced', true)
     },
     onBrewingWasInitiated: function() {
-      // this.logTransition('onBrewingWasInitiated')
-      this.sendState('brewingWasInitiated', true)
+      this.logTransition('onBrewingWasInitiated')
+      this.sendState('brewingWasInitiated', false)
     },
     onBrewingWasResumed: function() {
-      // this.logTransition('onBrewingWasResumed')
-      this.sendState('brewingWasResumed', true)
+      this.logTransition('onBrewingWasResumed')
+      this.sendState('brewingWasResumed', false)
+    },
+    onBrewingWasHalted: function() {
+      this.logTransition('brewingWasHalted')
+      this.sendState('brewingWasHalted', false)
+    },
+    onBrewerWasFilledWithWater: function() {
+      this.logTransition('brewerWasFilledWithWater')
+      this.sendState('brewerWasFilledWithWater', false)
     },
     onBrewingWasCompleted: function() {
       setTimeout(() => {
         this.sendState('brewingWasCompleted', true)
       }, 10000)
-      // this.logTransition('onBrewingWasCompleted')
+      this.logTransition('onBrewingWasCompleted')
       this.sendStatePreview('brewingWasCompleted', true)
     },
 
@@ -67,7 +79,7 @@ Brewer.prototype.logTransition = function(transition) {
 }
 
 Brewer.prototype.sendStatePreview = function(event, sendCups) {
-  console.log('[HUPP!] Förvarning om nybryggt kaffe! Bra eller dåligt? (Man behöver sannolikt servera kaffe till andra...)')
+  console.log('Kaffet är klart.')
 }
 
 /**
@@ -137,9 +149,14 @@ Brewer.prototype.maxCups = function() {
   return (this.left + this.right - WEIGHT_OF_EMPTY_BREWER_WITH_POT) / CUP_WEIGHT
 }
 
+Brewer.prototype.assertBrewingWasHalted = function(buffer, currentFrame) {
+  return false
+  const { left, right } = currentFrame
+  const earlierFrame = milliSecondsAgo(buffer, 1500)
+  return (earlierFrame.left + earlierFrame.right) > (left + right + WEIGHT_OF_POT + 50)
+}
+
 /**
- * Kolla när antalet färdiga koppar mer än maxantalet
- * (givet vikten, minus en kvarts kopp)
  * @return boolean
  */
 Brewer.prototype.assertBrewingWasCompleted = function(buffer, currentFrame) {
@@ -175,11 +192,6 @@ Brewer.prototype.assertPotWasRemoved = function(buffer, currentFrame) {
     // Vikten är mindre än tom bryggare minus kannans vikt och lite marginal...
     return (left + right) < (WEIGHT_OF_EMPTY_BREWER_WITH_POT - 200)
   }
-  if (this.current === BREWING) {
-    // Om bryggning pågår, och vikten minskar "mycket"...
-    const earlierFrame = milliSecondsAgo(buffer, 1500)
-    return (earlierFrame.left + earlierFrame.right) > (left + right + WEIGHT_OF_POT + 50)
-  }
   return false // Avoid initial undefined answer
 }
 
@@ -191,8 +203,24 @@ Brewer.prototype.assertPotWasRemoved = function(buffer, currentFrame) {
  */
 Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
   const { left, right } = currentFrame
-  return this.weightIsMoreThanEmptyBrewer(left, right)
-    // && currentFrame.previousState === IDLE
+  return (left - right) < 650
+    // this.weightIsMoreThanEmptyBrewer(left, right)
+    //
+    // Vänster minus höger är mindre än 620
+    //
+
+}
+
+Brewer.prototype.assertBrewerWasFilledWithWater = function(buffer, currentFrame) {
+  // Vänster minus höger är mer än X
+  // i minst 3 frames i rad
+  const WAIT_FOR_FRAMES = 5
+  return buffer.reduce(function(acc, current) {
+    const { left, right } = current
+    const differenceIsMoreThan = n => (left-right) > n
+    if (differenceIsMoreThan(1000)) return acc + 1
+    return acc
+  }, 0) > WAIT_FOR_FRAMES
 }
 
 /**
@@ -215,7 +243,7 @@ Brewer.prototype.assertBrewingWasResumed = function(buffer, currentFrame) {
  * @return boolean
  */
 Brewer.prototype.weightIsMoreThanEmptyBrewer = function(left, right)  {
-  const ERROR_MARGIN = 50 // grams
+  const ERROR_MARGIN = 10 // grams
   return (left + right) > (WEIGHT_OF_EMPTY_BREWER_WITH_POT - ERROR_MARGIN)
 }
 
@@ -243,7 +271,7 @@ Brewer.prototype.assertBrewingWasInitiated = function(buffer, currentFrame) {
     return acc
   }, { buffer: [buffer[0]], leftToRightFlows: 0 })
 
-  return analysedBuffer.leftToRightFlows > 10
+  return analysedBuffer.leftToRightFlows > 6
 }
 
 module.exports = Brewer

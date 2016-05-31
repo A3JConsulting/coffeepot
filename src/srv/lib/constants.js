@@ -6,7 +6,9 @@ module.exports = Object.freeze({
   MINIMUM_BREW: 3, // minst antal koppar när man sätter på en ny kanna
 
   IDLE: 'IDLE',
+  PREPARED_FOR_BREWING: 'PREPARED_FOR_BREWING',
   BREWING: 'BREWING',
+  BREWING_PAUSED: 'BREWING_PAUSED',
   FILTER_OR_POT_REMOVED: 'FILTER_OR_POT_REMOVED',
 
   INPUT_TICK_INTERVAL: 500, // Hur ofta ska det pollas?
