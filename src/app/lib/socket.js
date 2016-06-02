@@ -1,83 +1,80 @@
 module.exports = (function(object){
   "use strict";
 
-  var ipc = require("ipc");
+  const ipc = require("ipc");
 
   object.connect = function(){
-    var websocket = new WebSocket("ws://172.30.33.96:8080");
+    let websocket = new WebSocket("ws://172.30.33.96:8080");
     _parse(websocket);
-  };
-
-  object.getIcon = function(cups){
-    console.debug('getIcon', cups);
-    return 'state_'+cups+'.png';
   };
 
   object.brewingWasInitiated = function(payload){
     console.debug('brewingWasInitiated', payload);
-    new Notification("Brewing started.", {
-      body: "Coffee's on it's way."
+    new Notification("Averto!", {
+      body: "La kafo fermentan progreso."
     });
-    ipc.send("change-tray-icon", "state_0.png");
+    updateCupsIcon(0);
   };
 
   object.brewingWasCompleted = function(payload){
     console.debug('brewingWasCompleted', payload);
-    new Notification("Brewing completed.", {
-      body: "Coffee's ready."
+    new Notification("Averto!", {
+      body: "La kafo estas preta."
     });
-    ipc.send("change-tray-icon", object.getIcon(payload.cups));
+    updateCupsIcon(payload.cups);
   };
 
   object.potWasRemoved = function(payload){
     console.debug('potWasRemoved', payload);
-    new Notification("The coffeepot removed.", {
-      body: "Possible consumption."
+    new Notification("Averto!", {
+      body: "La kafkruĉo estas forigita."
     });
-    ipc.send("change-tray-icon", "state_0.png");
+    updateCupsIcon(0);
   };
 
   object.potWasReplaced = function(payload){
     console.debug('potWasReplaced', payload);
-    ipc.send('change-tray-icon', object.getIcon(payload.cups));
+    updateCupsIcon(payload.cups);
   }
 
   object.brewingWasHalted = function(payload){
-    new Notification("Varning!", {
-      body: 'Någon taaar kaffe trots pågående bryggning :/'
+    new Notification("Averto!", {
+      body: 'Iu preeeenas mian kafon dum fermentan!?'
     });
-    console.debug(payload);
   }
 
   object.brewingWasResumed = function(payload){
     console.debug(payload);
   }
 
-  object.updateCups = function(cups){
-    console.debug('Update cups to: ', cups);
-    const numberOfCups = (cups < 0) ? 0 : (cups < 10) ? 10 : cups
-    ipc.send('change-tray-icon', object.getIcon(numberOfCups));
-
-  }
-
   function _parse(ws){
     ws.onmessage = function(blob){
       const payload = JSON.parse(blob.data);
-      //Debug
       console.debug(payload);
-
-      try{
-        if (payload.event) {
-          object[payload.event](payload)
-        }else{
-          object.updateCups(payload.cups)
-          console.debug(payload);
-        }
-      }catch(e){
+      try {
+        propagateState(payload)
+      } catch(e) {
         console.error(e)
       }
     };
   }
+
+  function propagateState(payload) {
+    if (payload.event) {
+      object[payload.event](payload)
+    } else {
+      updateCupsIcon(payload.cups)
+    }
+  }
+
+  function updateCupsIcon(cups) {
+    const numberOfCups = (cups < 0) ? 0 : (cups > 10) ? 10 : cups // 0-10 cups only
+    ipc.send('change-tray-icon', getIcon(numberOfCups));
+  }
+
+  function getIcon(cups){
+    return 'state_'+cups+'.png';
+  };
 
   return object;
 }({}));
