@@ -203,7 +203,7 @@ Brewer.prototype.assertPotWasRemoved = function(buffer, currentFrame) {
  */
 Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
   const { left, right } = currentFrame
-  return (left - right) < 650
+  return (left - right) < 600
     // this.weightIsMoreThanEmptyBrewer(left, right)
     //
     // Vänster minus höger är mindre än 620
