@@ -62,7 +62,7 @@ module.exports = (function(object){
   function propagateState(payload) {
     if (payload.event) {
       object[payload.event](payload)
-    } elseif (payload.state === 'IDLE') {
+    } else if (payload.state === 'IDLE') {
       updateCupsIcon(payload.cups)
     }
   }
