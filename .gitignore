@@ -10,6 +10,7 @@
 node_modules/
 src/srv/lib/hx711/build
 npm-debug.log
+coffepot-*.tgz
 
 # Electron
 Electron.app
