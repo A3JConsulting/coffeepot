@@ -14,7 +14,7 @@ Early 2016 we set off to once and for all rectify all our worries surrounding th
 
 ## Download app
 
-[Click me now](https://www.dropbox.com/sh/3p1ihi4qmqhcajp/AACz9GGPd7lTfymZW9CS5mPIa?dl=0
+[Click me now](https://www.dropbox.com/sh/3p1ihi4qmqhcajp/AACz9GGPd7lTfymZW9CS5mPIa?dl=0)
 
 ## The scale
 In order to detect the state of the coffee brewer, on the hardware side, we decided that our best chances were to determine the weights on the left/right hand sides of the brewer.
