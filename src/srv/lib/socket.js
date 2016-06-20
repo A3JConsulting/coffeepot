@@ -1,4 +1,6 @@
 module.exports = (function(object){
+  'use strict';
+
   var wss = (require("ws").Server)({ port: 8080 });
 
   let state = {};
