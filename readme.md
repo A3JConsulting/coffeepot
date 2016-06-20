@@ -69,4 +69,12 @@ Here are a few ideas that has been mentioned regarding future development of thi
 - Detecting who drinks what and when
 
 ## Wiring
-[read here](docs/wiring.md)
+
+[Sketch](docs/wiring_sketch.jpg)
+
+[Getting started with load cells](https://learn.sparkfun.com/tutorials/getting-started-with-load-cells)
+
+[hx711 Hookup guide](https://learn.sparkfun.com/tutorials/load-cell-amplifier-hx711-breakout-hookup-guide)
+
+[Hx711 documentation](docs/Hx711_english.pdf)
+
