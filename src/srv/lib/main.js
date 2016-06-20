@@ -22,17 +22,19 @@ const getTick = () => {
 const weight = debug => debug ? getTick() : filter(require('hx711').getValues())
 let brewer = new (require('./brewer'))
 
+const calcAvg = buffer => {
+  return {
+    left: buffer.reduce((a,b) => a + b.left) / buffer.length,
+    right: buffer.reduce((a,b) => a + b.right) / buffer.length
+  }
+}
+
 module.exports = function main(debug = false) {
   Observable
     .interval(INPUT_TICK_INTERVAL)
     .map(tick => weight(debug))
-    .bufferWithCount(2)
-    .filter(x => {
-      const min = x[0].right - 50
-      const max = x[0].right + 50
-      return x[0].right.between(min, max)
-    })
-    .map(x => x[1])
+    .bufferWithCount(10, 1)
+    .map(calcAvg)
     .scan((buffer, current) => {
       return handleState(buffer, current, brewer)
     }, INITIAL_STATE)
