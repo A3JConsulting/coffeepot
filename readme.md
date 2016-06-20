@@ -11,10 +11,21 @@
 # Coffee brewing DIY team project by A3J
 Early 2016 we set off to once and for all rectify all our worries surrounding the daily brewing routines. The result is this DYI project that enables us (you) to view the state of the coffee brewer in your (our) OSX app tray. Which in turn enables us (you) to make more qualified decisions with regards to the planning of your coffee fetching promenades.
 
-![In action](pics/scale_thumb.jpg)
-![In action](pics/in_action_thumb.jpg)
-![In action](pics/raspberry_thumb.jpg)
-
+<div class="overflow: hidden; clear: both; width: 100%; margin:0; padding:0;">
+<figure style="float: left; width: calc(33% - 10px); margin:0; padding:5px;">
+    <img style="display:block; width: 100%" src="pics/scale.jpg"/>
+    <figcaption style="text-align: center;">Hardwarez</figcaption>
+</figure>
+<figure style="float: left; width: calc(33% - 10px); margin:0; padding:5px;">
+    <img style="display:block; width:100%" src="pics/in_action.jpg"/>
+    <figcaption style="text-align: center;">In action</figcaption>
+</figure>
+<figure style="float: left; width: calc(33% - 10px); margin:0; padding:5px;">
+    <img style="display:block; width:100%" src="pics/raspberry.jpg"/>
+    <figcaption style="text-align: center;">Raspberry Pi</figcaption>
+</figure>
+</div>
+<div style="clear:both"></div>
 
 ## Download app
 
