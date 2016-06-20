@@ -8,7 +8,7 @@ app.dock.hide();
 app.on("ready", function(){
   var main = new (require("browser-window"))({ show: false});
       main.loadURL("file://" + __dirname + "/index.html");
-      main.webContents.openDevTools({ detach: true });
+      //main.webContents.openDevTools({ detach: true });
 
   var tray = new (require("tray"))(path.join(__dirname, "/lib/assets/state_0.png"));
 
@@ -16,7 +16,7 @@ app.on("ready", function(){
     {
       label: "Quit",
       accelerator: "Command+Q",
-      click: function() { app.quit(); }
+      click: () => { app.quit(); }
     }
   ]));
 

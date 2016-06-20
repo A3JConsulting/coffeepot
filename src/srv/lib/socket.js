@@ -1,6 +1,8 @@
 module.exports = (function(object){
   var wss = (require("ws").Server)({ port: 8080 });
 
+  let state = {};
+
   object.init = function(){
 
     wss.on("connection", function(socket){
@@ -15,6 +17,7 @@ module.exports = (function(object){
       //     }
       //   }
       // }));
+      socket.send(state);
 
       socket.on("message", function(data){
         data = JSON.parse(data);
@@ -34,12 +37,15 @@ module.exports = (function(object){
     wss.clients.forEach(function each(client) {
         client.send(msg);
     });
+    state = msg;
   };
 
   object.sendToClient = function(id, msg){
     const client = wss.clients.find(function(client){
       return client.id === id;
     });
+    state = msg;
+
     client.send(msg);
   }
 
@@ -51,6 +57,7 @@ module.exports = (function(object){
       .forEach(function each(client) {
         client.send(msg);
     });
+    state = msg;
   }
 
   return object;
