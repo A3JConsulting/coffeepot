@@ -24,16 +24,18 @@ let brewer = new (require('./brewer'))
 
 const calcAvg = buffer => {
   return {
-    left: buffer.reduce((a,b) => a + b.left) / buffer.length,
-    right: buffer.reduce((a,b) => a + b.right) / buffer.length
+    left: buffer.reduce((a, b) => a + b.left, 0) / buffer.length,
+    right: buffer.reduce((a, b) => a + b.right, 0) / buffer.length
   }
 }
 
 module.exports = function main(debug = false) {
   Observable
     .interval(INPUT_TICK_INTERVAL)
-    .map(tick => weight(debug))
-    .bufferWithCount(10, 1)
+    .map(tick => {
+      return weight(debug)
+    })
+    .bufferWithCount(3, 1)
     .map(calcAvg)
     .scan((buffer, current) => {
       return handleState(buffer, current, brewer)
