@@ -48,3 +48,6 @@ Here are a few ideas that has been mentioned regarding future development of thi
 - Being able to claim a particular brew
 - Saving stats for who brewed what and when
 - Detecting who drinks what and when
+
+## Wiring
+[read here](docs/wiring.md)
