@@ -25,7 +25,10 @@ const transform = val => {
 }
 
 const filter = val => {
-  return transform(setZero(parseLeftRight(val)))
+  return
+    transform(
+      setZero(
+        parseLeftRight(val)))
 }
 
 module.exports = filter

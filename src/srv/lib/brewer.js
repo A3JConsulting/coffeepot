@@ -204,20 +204,15 @@ Brewer.prototype.assertPotWasRemoved = function(buffer, currentFrame) {
 Brewer.prototype.assertPotWasReplaced = function(buffer, currentFrame) {
   const { left, right } = currentFrame
   return (left - right) < 600
-    // this.weightIsMoreThanEmptyBrewer(left, right)
-    //
-    // Vänster minus höger är mindre än 620
-    //
-
 }
 
 Brewer.prototype.assertBrewerWasFilledWithWater = function(buffer, currentFrame) {
   // Vänster minus höger är mer än X
-  // i minst 3 frames i rad
+  // i minst 5 frames i rad
   const WAIT_FOR_FRAMES = 5
+  const differenceIsMoreThan = n => (left-right) > n
   return buffer.reduce(function(acc, current) {
     const { left, right } = current
-    const differenceIsMoreThan = n => (left-right) > n
     if (differenceIsMoreThan(1000)) return acc + 1
     return acc
   }, 0) > WAIT_FOR_FRAMES

@@ -2,37 +2,21 @@ module.exports = (function(object){
   'use strict';
 
   var wss = (require("ws").Server)({ port: 8080 });
-
   let state = {};
 
   object.init = function(){
 
     wss.on("connection", function(socket){
-      // var icon = 10
-      // socket.send(JSON.stringify({
-      //   method: "status_change",
-      //   payload: {
-      //     icon: "state_"+icon+".png",
-      //     message: {
-      //       title: 'Min titel',
-      //       body: 'Lorem Ipsum'
-      //     }
-      //   }
-      // }));
       socket.send(state);
-
       socket.on("message", function(data){
         data = JSON.parse(data);
-
         try{
           object[data.method](data.payload);
         }catch(e){
           throw e;
         }
       });
-
     });
-
   };
 
   object.broadcast = function(msg){

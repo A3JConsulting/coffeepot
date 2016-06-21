@@ -1,12 +1,8 @@
 'use strict'
 const filter = require('./filter')
 const {Observable} = require('rx')
-const guessNextState = require('./guess')
-const {appendToBuffer, logCurrentState, logLastFrame, handleState} = require('./system')
+const {logCurrentState, logLastFrame, handleState} = require('./system')
 const {INPUT_TICK_INTERVAL, INITIAL_STATE} = require('./constants')
-Number.prototype.between = function(min, max) {
-  return this > min && this < max
-}
 
 const testStream = (function() {
   return require('./data.json')
@@ -22,21 +18,20 @@ const getTick = () => {
 const weight = debug => debug ? getTick() : filter(require('hx711').getValues())
 let brewer = new (require('./brewer'))
 
-const calcAvg = buffer => {
+const avgFilter = buffer => {
+  const avg = (x, d) => x.reduce((a, b) => a + b[d], 0) / x.length
   return {
-    left: buffer.reduce((a, b) => a + b.left, 0) / buffer.length,
-    right: buffer.reduce((a, b) => a + b.right, 0) / buffer.length
+    left: avg(buffer, 'left'),
+    right: avg(buffer, 'right'),
   }
 }
 
 module.exports = function main(debug = false) {
   Observable
     .interval(INPUT_TICK_INTERVAL)
-    .map(tick => {
-      return weight(debug)
-    })
-    .bufferWithCount(3, 1)
-    .map(calcAvg)
+    .map(tick => weight(debug))
+    .bufferWithCount(4, 1)
+    .map(avgFilter)
     .scan((buffer, current) => {
       return handleState(buffer, current, brewer)
     }, INITIAL_STATE)
