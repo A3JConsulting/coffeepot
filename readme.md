@@ -67,3 +67,10 @@ Here are a few ideas that has been mentioned regarding future development of thi
 
 [Hx711 documentation](docs/Hx711_english.pdf)
 
+### GPIO numbering:
+blå 3
+brun 15
+svart 10
+gul 12
+vit 2
+grön 14
